@@ -1,0 +1,44 @@
+<!doctype html>
+<style type="text/css">
+    #mainPopup {
+        padding: 10px;
+        height: 200px;
+        width: 400px;
+        font-family: Helvetica, Ubuntu, Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+</style>
+
+<div id="mainPopup">
+    <h1>LinkedIn Sales Nav Scraper!</h1>
+    <h4>Automate those hours away</h4>
+    <h3>Options</h3>
+    <form id="scraperForm">
+        Word/Phrase to match:
+        <input id="phrases" type="text" name="phrases" placeholder="AT&T"><br>
+        Email Domain:
+        <input id="domain" type="text" name="domain" placeholder="@att.com"><br>
+        Location(leave blank to omit):
+        <input id="location" type="text" name="location" placeholder="New York City"><br>
+        Number of Pages to Scrape:
+        <input id="pages" type="number" name="pages" value="1"><br>
+        User Name Formatting(ex: Joe Bishop)
+        <select id="emailtype">
+            <option value="">joebishop@email.com</option>
+            <option value="dot">joe.bishop@email.com</option>
+            <option value="initial">jbishop@email.com</option>
+            <option value="underscore">joe_bishop@email.com</option>
+            <option value="initialDot">j.bishop@email.com</option>
+            <option value="initialUnderscore">j_bishop@email.com</option>
+            <option value="lastFirst">bishopjoe@email.com</option>
+            <option value="lastInitial">bishopj@email.com</option>
+            <option value="firstInitial">joeb@email.com</option>
+        </select>
+
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<script src="browser_action.js"></script>

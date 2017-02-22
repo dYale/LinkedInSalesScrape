@@ -8,6 +8,21 @@
 // 7) paste into excel
 // 8) CHECK FOR DUPLICATES.
 
+function openExtension(request, sender, sendResponse) {
+  var angularDiv = document.querySelector('#shqTargetMapper');
+
+  /* Manually bootstrap the Angular app */
+
+  if (request.message === "submit_scrape_query") {
+    console.log(request);
+    //scrapeLinkedInForMembers(["hewlett packard"], "@hp.com", "", 2, 1, "");
+  }
+}
+
+//event listener that listeners to the reply of a user clicking the extension icon
+chrome.runtime.onMessage.addListener(openExtension);
+
+
 var users = [];
 var running = true;
 
@@ -101,7 +116,6 @@ function makeTableHTML(myArray) {
 }
 
 //in the parentheses (first argument, second argument, third argument, 4th argument, fifth argument, sixth argument)
-scrapeLinkedInForMembers(["hewlett packard"], "@hp.com", "", 2, 1, "");
 //***HOW TO USE THE ARGUMENTS***
 //First Argument: search terms, all lower-case. You can list multiple in this format: ["thing 1", "thing 2", "thing 3"]. this filters through any bad results that come up in the initial search, i.e. from a different account.
 //Second Argument: email domain name for your account. This only works if you search one account at a time.
