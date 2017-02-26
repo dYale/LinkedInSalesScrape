@@ -8,23 +8,24 @@
 // 7) paste into excel
 // 8) CHECK FOR DUPLICATES.
 
-function openExtension(request, sender, sendResponse) {
-  var angularDiv = document.querySelector('#shqTargetMapper');
 
-  /* Manually bootstrap the Angular app */
+
+var users = [];
+var running = true;
+
+function openExtension(request, sender, sendResponse) {
 
   if (request.message === "submit_scrape_query") {
-    console.log(request);
-    //scrapeLinkedInForMembers(["hewlett packard"], "@hp.com", "", 2, 1, "");
+    var options = request.options;
+    var results = scrapeLinkedInForMembers(options.phrases.toLowerCase().split(" "), options.domain, options.location, 3, options.pages, options.emailtype);
+    console.log(results);
+    sendResponse({message: "query_results", results: results});
+    users = [];
   }
 }
 
 //event listener that listeners to the reply of a user clicking the extension icon
 chrome.runtime.onMessage.addListener(openExtension);
-
-
-var users = [];
-var running = true;
 
 function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse, emailFormat) {
   $.each($("li.member"), function(x, val) {
@@ -78,25 +79,24 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
 
       //if the user has been saved, skip over them
       if(!$(val).find(".saved")[0]){
-        $(val).find(".save-lead-container").submit();
+        //$(val).find(".save-lead-container").submit();
         users.push(user);
       }
 
     }
   });
-
+  console.log(users);
   if (pagesToTraverse && typeof pagesToTraverse === "number" && pagesToTraverse-- > 0){
-    if ($(".next-pagination").hasClass("disabled")) {
-      console.log(makeTableHTML(users));
+    if (Array.prototype.slice.call(document.getElementsByClassName("next-pagination")[0].classList).includes("disabled")) {
+      return makeTableHTML(users);
     } else {
-      $(".next-pagination").click();
+      document.getElementsByClassName("next-pagination")[0].click();
       setTimeout(function() {
         scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse);
       }, time * 1000);
     }
   } else {
-    console.log(makeTableHTML(users));
-    users = [];
+    return makeTableHTML(users);
   }
 
 }
@@ -111,7 +111,6 @@ function makeTableHTML(myArray) {
     result += "</tr>";
   }
   result += "</table>";
-
   return result;
 }
 
