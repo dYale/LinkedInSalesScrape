@@ -23,9 +23,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 document.getElementById('scraperForm').onsubmit = submitVals;
 
 function copyResults(message) {
+  console.log(message);
   var input = document.createElement('textarea');
   document.body.appendChild(input);
-  input.value = message.text;
+  input.value = message;
   input.focus();
   input.select();
   document.execCommand('Copy');

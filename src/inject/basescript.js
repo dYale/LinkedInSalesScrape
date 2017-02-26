@@ -40,7 +40,10 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
       }) && cardLocation.includes(location)) {
       var user = $(val).find(".name").text();
       if (user.includes(",") || user.includes(".")) {
-        user = user.split(" ")[0] + " " + user.split(" ")[1].substring(0, user.split(" ")[1].length - 1)
+        user = user.split(" ")[0] + " " + user.split(" ")[1].substring(0, user.split(" ")[1].length - 1);
+      } else if (user.includes("(")){
+        var splitUserOnSpace = user.split(" ");
+        user = splitUserOnSpace[0] + " " + splitUserOnSpace[2];
       }
 
       var splitNames = user.split(" ");
@@ -83,7 +86,9 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
       //if the user has been saved, skip over them
       if(!$(val).find(".saved")[0]){
         //$(val).find(".save-lead-container").submit();
-        users.push(user);
+        if(users.indexOf(user) === -1) {
+          users.push(user);
+        }
       }
 
     }
