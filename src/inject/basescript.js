@@ -17,11 +17,14 @@ function openExtension(request, sender, sendResponse) {
 
   if (request.message === "submit_scrape_query") {
     var options = request.options;
-    var results = scrapeLinkedInForMembers(options.phrases.toLowerCase().split(" "), options.domain, options.location, 3, options.pages, options.emailtype);
-    console.log(results);
-    sendResponse({message: "query_results", results: results});
-    users = [];
+    scrapeLinkedInForMembers(options.phrases.toLowerCase().split(" "), options.domain, options.location, 3, options.pages, options.emailtype);
   }
+}
+
+function sendToBackground (message, data, callback) {
+  chrome.runtime.sendMessage({message: message, data: data}, function (response) {
+    //callback(response);
+  });
 }
 
 //event listener that listeners to the reply of a user clicking the extension icon
@@ -85,10 +88,10 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
 
     }
   });
-  console.log(users);
   if (pagesToTraverse && typeof pagesToTraverse === "number" && pagesToTraverse-- > 0){
     if (Array.prototype.slice.call(document.getElementsByClassName("next-pagination")[0].classList).includes("disabled")) {
-      return makeTableHTML(users);
+      sendToBackground("query_results", makeTableHTML(users));
+      users = [];
     } else {
       document.getElementsByClassName("next-pagination")[0].click();
       setTimeout(function() {
@@ -96,7 +99,8 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
       }, time * 1000);
     }
   } else {
-    return makeTableHTML(users);
+    sendToBackground("query_results", makeTableHTML(users))
+    users = [];
   }
 
 }
