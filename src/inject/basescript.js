@@ -5,11 +5,11 @@ function openExtension(request, sender, sendResponse) {
 
   if (request.message === "submit_scrape_query") {
     var options = request.options;
-    scrapeLinkedInForMembers(options.phrases.toLowerCase().split(" "), options.domain, options.location, 3, options.pages, options.emailtype);
+    scrapeLinkedInForMembers(options.phrases.toLowerCase().split(" "), options.domain, options.location, 3, options.pages, options.emailtype, options.skippedSaved, options.saveAsLead);
   }
 }
 
-function sendToBackground (message, data, callback) {
+function sendToBackground(message, data, callback) {
   chrome.runtime.sendMessage({message, data}, function (response) {
     //callback(response);
   });
@@ -34,18 +34,18 @@ chrome.runtime.onMessage.addListener(openExtension);
 //  "lastFirst" = bishopjordan@email.com
 //  "lastInitial" = bishopj@email.com
 //  "firstInitial" = jordanb@email.com
-function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse, emailFormat) {
-  $.each($("li.member"), function(x, val) {
+function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse, emailFormat, skipSaved, saveAsLead) {
+  $.each($("li.member"), function (x, val) {
 
     var company = $(val).find(".company-name").text().toLowerCase();
     var cardLocation = $($(val).find(".info-value")[2]).text();
-    if (searchTerms.some(function(v) {
+    if (searchTerms.some(function (v) {
         return company.includes(v)
       }) && cardLocation.includes(location)) {
       var user = $(val).find(".name").text();
       if (user.includes(",") || user.includes(".")) {
         user = user.split(" ")[0] + " " + user.split(" ")[1].substring(0, user.split(" ")[1].length - 1);
-      } else if (user.includes("(")){
+      } else if (user.includes("(")) {
         var splitUserOnSpace = user.split(" ");
         user = splitUserOnSpace[0] + " " + splitUserOnSpace[2];
       }
@@ -54,22 +54,22 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
       var firstName = splitNames[0];
       var lastName = splitNames[1];
       var emailAdr;
-      if(emailFormat === "initialDot"){
+      if (emailFormat === "initialDot") {
         emailAdr = firstName[0] + "." + lastName + email;
-      } else if (emailFormat === "underscore"){
+      } else if (emailFormat === "underscore") {
         emailAdr = user.split(" ").join("_") + email;
-      } else if (emailFormat === "initialUnderscore"){
+      } else if (emailFormat === "initialUnderscore") {
         emailAdr = firstName[0] + "_" + lastName + email;
-      } else if (emailFormat === "initial"){
+      } else if (emailFormat === "initial") {
         emailAdr = firstName[0] + lastName + email;
-      } else if (emailFormat === "dot"){
+      } else if (emailFormat === "dot") {
         emailAdr = user.split(" ").join(".") + email;
-      } else if (emailFormat === "lastFirst"){
+      } else if (emailFormat === "lastFirst") {
         emailAdr = lastName + firstName + email;
-      }else if (emailFormat === "lastInitial"){
+      } else if (emailFormat === "lastInitial") {
         emailAdr = lastName + firstName[0] + email;
-      } else if (emailFormat === "firstInitial"){
-        emailAdr = firstName +lastName[0] + email;
+      } else if (emailFormat === "firstInitial") {
+        emailAdr = firstName + lastName[0] + email;
       } else {
         emailAdr = firstName + lastName + email;
       }
@@ -86,24 +86,35 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
         title,
         cardLocation
       };
-
+      console.log(skipSaved, saveAsLead);
       //if the user has been saved, skip over them
-      if(!$(val).find(".saved")[0]){
-        //$(val).find(".save-lead-container").submit();
-        if(users.indexOf(user) === -1) {
+      if (skipSaved && !$(val).find(".saved")[0]) {
+        if (saveAsLead) {
+          var elem = val.querySelectorAll(".primary-action-btn")[0];
+          elem.click();
+        }
+        if (users.indexOf(user) === -1) {
+          users.push(user);
+        }
+      } else if (!skipSaved) {
+        if (saveAsLead && !$(val).find(".saved")[0]) {
+          var elem = val.querySelectorAll(".primary-action-btn")[0];
+          elem.click();
+        }
+        if (users.indexOf(user) === -1) {
           users.push(user);
         }
       }
 
     }
   });
-  if (pagesToTraverse && typeof pagesToTraverse === "number" && pagesToTraverse-- > 1){
+  if (pagesToTraverse && typeof pagesToTraverse === "number" && pagesToTraverse-- > 1) {
     if (Array.prototype.slice.call(document.getElementsByClassName("next-pagination")[0].classList).includes("disabled")) {
       sendToBackground("query_results", makeTableHTML(users));
       users = [];
     } else {
       document.getElementsByClassName("next-pagination")[0].click();
-      setTimeout(function() {
+      setTimeout(function () {
         scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse);
       }, time * 1000);
     }

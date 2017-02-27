@@ -5,6 +5,9 @@ function submitVals() {
   scrapeQuery.location = document.getElementById('location').value;
   scrapeQuery.pages = Number(document.getElementById('pages').value);
   scrapeQuery.emailtype = document.getElementById('emailtype').value;
+  scrapeQuery.saveAsLead = document.getElementById('saveAsLead').checked;
+  scrapeQuery.skippedSaved = document.getElementById('skippedSaved').checked;
+
 
   // alert( "Handler for .submit() called." );
   chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
