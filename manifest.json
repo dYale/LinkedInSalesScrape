@@ -1,11 +1,9 @@
 {
-  "name": "LinkedIn Sales Nav Scraper ",
+  "name": "LinkedIn Sales Buddy",
   "version": "0.0.1",
   "manifest_version": 2,
   "description": "The extension scrapes LinkedIn Sales Navigator and generates an Email List that you can paste to excel.",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
   "background": {
@@ -13,8 +11,8 @@
     "persistent": true
   },
   "browser_action": {
-    "default_icon": "icons/icon19.png",
-    "default_title": "page action demo",
+    "default_icon": "icons/icon128.png",
+    "default_title": "LinkedIn Sales Buddy",
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
