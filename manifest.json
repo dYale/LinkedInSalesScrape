@@ -6,10 +6,6 @@
   "icons": {
     "128": "icons/icon128.png"
   },
-  "background": {
-    "page": "src/bg/background.html",
-    "persistent": true
-  },
   "browser_action": {
     "default_icon": "icons/icon128.png",
     "default_title": "LinkedIn Sales Buddy",

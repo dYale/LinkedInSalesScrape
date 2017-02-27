@@ -1,7 +1,6 @@
 var users = [];
-var running = true;
 
-function openExtension(request, sender, sendResponse) {
+function queryRequest(request, sender, sendResponse) {
 
   if (request.message === "submit_scrape_query") {
     var options = request.options;
@@ -11,12 +10,11 @@ function openExtension(request, sender, sendResponse) {
 
 function sendToBackground(message, data, callback) {
   chrome.runtime.sendMessage({message, data}, function (response) {
-    //callback(response);
   });
 }
 
 //event listener that listeners to the reply of a user clicking the extension icon
-chrome.runtime.onMessage.addListener(openExtension);
+chrome.runtime.onMessage.addListener(queryRequest);
 
 
 //First Argument: search terms, all lower-case. You can list multiple in this format: ["thing 1", "thing 2", "thing 3"]. this filters through any bad results that come up in the initial search, i.e. from a different account.
@@ -25,20 +23,21 @@ chrome.runtime.onMessage.addListener(openExtension);
 //Fourth Argument: time spent scraping data on each page you run the code on. You probably won't need to mess with this.
 //Fifth Argument: number of LinkedIn pages scraped per run of the code. I run it one page at a time to check for errors after each run, i.e. duplicates.
 //Sixth Argument: email username format, see below for format options.
-//  "" = jordanbishop@email.com
-//  "dot" = jordan.bishop@email.com
+//  "" = joebishop@email.com
+//  "dot" = joe.bishop@email.com
 //  "initial" = jbishop@email.com
-//  "underscore" = jordan_bishop@email.com
+//  "underscore" = joe_bishop@email.com
 //  "initialDot" = j.bishop@email.com
 //  "initialUnderscore" = j_bishop@email.com
-//  "lastFirst" = bishopjordan@email.com
+//  "lastFirst" = bishopjoe@email.com
 //  "lastInitial" = bishopj@email.com
-//  "firstInitial" = jordanb@email.com
+//  "firstInitial" = joeb@email.com
 function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse, emailFormat, skipSaved, saveAsLead) {
   $.each($("li.member"), function (x, val) {
 
     var company = $(val).find(".company-name").text().toLowerCase();
     var cardLocation = $($(val).find(".info-value")[2]).text();
+
     if (searchTerms.some(function (v) {
         return company.includes(v)
       }) && cardLocation.includes(location)) {
@@ -54,6 +53,7 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
       var firstName = splitNames[0];
       var lastName = splitNames[1];
       var emailAdr;
+
       if (emailFormat === "initialDot") {
         emailAdr = firstName[0] + "." + lastName + email;
       } else if (emailFormat === "underscore") {
@@ -75,51 +75,50 @@ function scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTra
       }
       var title = $(val).find(".degree-icon").attr("title");
 
+      //weird edge cases
       if (user.includes("LinkedIn")) {
         return;
       }
 
-      var user = {
+      var userObj = {
         firstName,
         lastName,
         emailAdr,
         title,
         cardLocation
       };
-      console.log(skipSaved, saveAsLead);
+
       //if the user has been saved, skip over them
       if (skipSaved && !$(val).find(".saved")[0]) {
         if (saveAsLead) {
           var elem = val.querySelectorAll(".primary-action-btn")[0];
           elem.click();
         }
-        if (users.indexOf(user) === -1) {
-          users.push(user);
+        if (users.indexOf(userObj) === -1) {
+          users.push(userObj);
         }
       } else if (!skipSaved) {
         if (saveAsLead && !$(val).find(".saved")[0]) {
           var elem = val.querySelectorAll(".primary-action-btn")[0];
           elem.click();
         }
-        if (users.indexOf(user) === -1) {
-          users.push(user);
+        if (users.indexOf(userObj) === -1) {
+          users.push(userObj);
         }
       }
 
     }
   });
-  if (pagesToTraverse && typeof pagesToTraverse === "number" && pagesToTraverse-- > 1) {
-    if (Array.prototype.slice.call(document.getElementsByClassName("next-pagination")[0].classList).includes("disabled")) {
-      sendToBackground("query_results", makeTableHTML(users));
-      users = [];
-    } else {
-      document.getElementsByClassName("next-pagination")[0].click();
-      setTimeout(function () {
-        scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse);
-      }, time * 1000);
-    }
+
+  //recurse if necessary requested by user
+  if (pagesToTraverse && typeof pagesToTraverse === "number" && pagesToTraverse-- > 1
+    && !Array.prototype.slice.call(document.getElementsByClassName("next-pagination")[0].classList).includes("disabled")) {
+    document.getElementsByClassName("next-pagination")[0].click();
+    setTimeout(function () {
+      scrapeLinkedInForMembers(searchTerms, email, location, time, pagesToTraverse, emailFormat, skipSaved, saveAsLead);
+    }, time * 1000);
   } else {
-    sendToBackground("query_results", makeTableHTML(users))
+    sendToBackground("query_results", makeTableHTML(users));
     users = [];
   }
 
