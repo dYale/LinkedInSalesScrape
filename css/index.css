@@ -37,3 +37,10 @@ ul.dropdown-content.select-dropdown li span {
 .row-last {
     margin-bottom: 0;
 }
+
+#mainPopup {
+    padding: 10px;
+    height: 200px;
+    width: 400px;
+    font-family: Helvetica, Ubuntu, Arial, sans-serif;
+}
