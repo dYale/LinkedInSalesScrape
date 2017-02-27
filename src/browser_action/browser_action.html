@@ -12,12 +12,12 @@
     }
 </style>
 <div id="mainPopup">
-    <h5>LinkedIn Sales Nav Scraper</h5>
+    <h5 class="blue-text text-darken-2 center">LinkedIn Sales Nav Scraper</h5>
     <form id="scraperForm">
         <fieldset>
             <legend>Options</legend>
 
-            <div class="row">
+            <div class="row row-last">
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s6">
@@ -55,19 +55,19 @@
                         </select>
                         <label for="emailtype">Email Format (ex: Joe Bishop) - required</label>
                     </div>
-                    <div class="row">
-                        <div class="col s7">
-                            <div class="col s12">
-                                <input type="checkbox" id="saveAsLead"/>
-                                <label for="saveAsLead">Save Matches As Leads</label>
-                            </div>
-                            <div class="col s12">
-                                <input type="checkbox" id="skippedSaved"/>
-                                <label for="skippedSaved">Skip Previously Saved Leads</label>
-                            </div>
-                        </div>
-                        <div class="col s5">
-                            <button class="btn waves-effect waves-light right" type="submit" name="action" value="Submit">Submit
+                    <div class="col s6">
+                        <input type="checkbox" id="saveAsLead"/>
+                        <label for="saveAsLead">Save Matches As Leads</label>
+                    </div>
+                    <div class="col s6">
+                        <input type="checkbox" id="skippedSaved"/>
+                        <label for="skippedSaved">Skip Previously Saved Leads</label>
+                    </div>
+                    <div class="row row-last">
+                        <div class="col s12 right-align" style="padding: 6%">
+                            <button class="btn waves-effect waves-light blue darken-2" type="submit" name="action"
+                                    value="Submit">Scrape
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -82,4 +82,6 @@
     <script src="browser_action.js"></script>
     <script src="../../js/materialize.min.js"></script>
     <link rel="stylesheet" href="../../css/materialize.min.css">
+    <link rel="stylesheet" href="../../css/index.css">
+
 </footer>

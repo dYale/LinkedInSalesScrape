@@ -1,0 +1,39 @@
+.input-field input[type=text]:focus + label {
+    color: #1976d2;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #1976d2;
+    box-shadow: 0 1px 0 0 #1976d2;
+}
+
+.input-field input[type=number]:focus + label {
+    color: #1976d2;
+}
+/* label underline focus color */
+.input-field input[type=number]:focus {
+    border-bottom: 1px solid #1976d2;
+    box-shadow: 0 1px 0 0 #1976d2;
+}
+
+.input-field input[type=select]:focus + label {
+    color: #1976d2;
+}
+/* label underline focus color */
+.input-field input[type=select]:focus {
+    border-bottom: 1px solid #1976d2;
+    box-shadow: 0 1px 0 0 #1976d2;
+}
+
+ul.dropdown-content.select-dropdown li span {
+    color: #1976d2; /* no need for !important :) */
+}
+
+.bottom-right {
+    bottom: 5px;
+    text-align: right;
+}
+
+.row-last {
+    margin-bottom: 0;
+}
