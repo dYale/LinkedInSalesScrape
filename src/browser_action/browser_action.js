@@ -32,3 +32,7 @@ function copyResults(message) {
   document.execCommand('Copy');
   input.remove();
 }
+
+$(document).ready(function() {
+  $('select').material_select();
+});

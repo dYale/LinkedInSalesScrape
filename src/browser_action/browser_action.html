@@ -11,34 +11,75 @@
         font-size: 2em;
     }
 </style>
-
 <div id="mainPopup">
-    <h1>LinkedIn Sales Nav Scraper!</h1>
-    <h4>Automate those hours away</h4>
-    <h3>Options</h3>
+    <h5>LinkedIn Sales Nav Scraper</h5>
     <form id="scraperForm">
-        Word/Phrase to match:
-        <input id="phrases" type="text" name="phrases" placeholder="AT&T"><br>
-        Email Domain:
-        <input id="domain" type="text" name="domain" placeholder="@att.com"><br>
-        Location(leave blank to omit):
-        <input id="location" type="text" name="location" placeholder="New York City"><br>
-        Number of Pages to Scrape:
-        <input id="pages" type="number" name="pages" value="1"><br>
-        User Name Formatting(ex: Joe Bishop)
-        <select id="emailtype">
-            <option value="">joebishop@email.com</option>
-            <option value="dot">joe.bishop@email.com</option>
-            <option value="initial">jbishop@email.com</option>
-            <option value="underscore">joe_bishop@email.com</option>
-            <option value="initialDot">j.bishop@email.com</option>
-            <option value="initialUnderscore">j_bishop@email.com</option>
-            <option value="lastFirst">bishopjoe@email.com</option>
-            <option value="lastInitial">bishopj@email.com</option>
-            <option value="firstInitial">joeb@email.com</option>
-        </select>
+        <fieldset>
+            <legend>Options</legend>
 
-        <input type="submit" value="Submit">
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input placeholder="LinkedIn MSFT Microsoft" id="phrases" type="text">
+                            <label for="phrases">Word/Phrase to match - required</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="domain" type="text" name="domain" placeholder="@att.com">
+                            <label for="domain">Email Domain - required</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="location" type="text" name="location" placeholder="New York City"><br>
+                            <label for="location">Location - optional</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="pages" type="number" name="pages" value="1"><br>
+                            <label for="pages">Number of Pages to Scrape - required</label>
+                        </div>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="emailtype">
+                            <option value="">joebishop@email.com</option>
+                            <option value="dot">joe.bishop@email.com</option>
+                            <option value="initial">jbishop@email.com</option>
+                            <option value="underscore">joe_bishop@email.com</option>
+                            <option value="initialDot">j.bishop@email.com</option>
+                            <option value="initialUnderscore">j_bishop@email.com</option>
+                            <option value="lastFirst">bishopjoe@email.com</option>
+                            <option value="lastInitial">bishopj@email.com</option>
+                            <option value="firstInitial">joeb@email.com</option>
+                        </select>
+                        <label for="emailtype">Email Format (ex: Joe Bishop) - required</label>
+                    </div>
+                    <div class="row">
+                        <div class="col s7">
+                            <div class="col s12">
+                                <input type="checkbox" id="saveAsLead"/>
+                                <label for="saveAsLead">Save Matches As Leads</label>
+                            </div>
+                            <div class="col s12">
+                                <input type="checkbox" id="skippedSaved"/>
+                                <label for="skippedSaved">Skip Previously Saved Leads</label>
+                            </div>
+                        </div>
+                        <div class="col s5">
+                            <button class="btn waves-effect waves-light right" type="submit" name="action" value="Submit">Submit
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            </button>
+        </fieldset>
     </form>
 </div>
-<script src="browser_action.js"></script>
+<footer>
+    <script src="../../js/jquery/jquery.min.js"></script>
+    <script src="browser_action.js"></script>
+    <script src="../../js/materialize.min.js"></script>
+    <link rel="stylesheet" href="../../css/materialize.min.css">
+</footer>
