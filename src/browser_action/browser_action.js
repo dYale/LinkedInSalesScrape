@@ -25,6 +25,7 @@ document.getElementById('scraperForm').onsubmit = submitVals;
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.message == "query_results") {
     copyResults(request.data);
+    alert("Results have been copied to your clipboard!")
   }
 });
 
