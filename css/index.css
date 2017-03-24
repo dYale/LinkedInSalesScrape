@@ -44,3 +44,7 @@ ul.dropdown-content.select-dropdown li span {
     width: 400px;
     font-family: Helvetica, Ubuntu, Arial, sans-serif;
 }
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}

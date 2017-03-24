@@ -1,12 +1,12 @@
 <!doctype html>
 <div id="mainPopup">
     <div class="row-last">
-        <i class="material-icons small blue-text text-darken-2 right info" style="margin-top: 10px">info_outline</i>
+        <i class="material-icons small blue-text text-darken-2 right info z-depth-2" style="margin-top: 10px; cursor:pointer; border-radius: 100%">info_outline</i>
     </div>
     <div class="row">
         <h5 class="blue-text text-darken-2 center">LinkedIn Sales Nav Scraper</h5>
     </div>
-    <form id="scraperForm">
+    <form id="scraperForm" class="margin-bottom-20">
         <fieldset>
             <legend>Options</legend>
 
@@ -69,8 +69,30 @@
             </button>
         </fieldset>
     </form>
-    <div id="instructions">
-        Engage
+    <div id="instructions" class="margin-bottom-20">
+        <fieldset>
+            <legend>Instructions</legend>
+            <h6 class="flow-text">
+                This extension scans several pages of the LinkedIn Sales Navigator to generate a list of emails and names that can be pasted directly into an excel spreadsheet.
+            </h6>
+            <h5 class="center">Steps</h5>
+            <ol class="flow-text">
+                <li> Log into LinkedIn sales navigator.</li>
+                <li> Search for leads through the "Search for people and companies" search bar - include any desired
+                    filters.
+                </li>
+                <li> When on the results page, fill in this extension form</li>
+                <li>Words and Phrases are character and words that will match the company name shown in bold on each lead. You may enter several phrases separated by a semi-colon.</li>
+                <li>Email Domain will add the email suffix to each lead.</li>
+                <li>Location is optional and must match perfectly to qualify as a match</li>
+                <li>Number of Pages will go the next number of requested pages and repeat the process.</li>
+                <li>Email Format is the format by which we want the lead's name rendered in the generated list.</li>
+                <li>Press Scrape and watch the extension cycle through the pages.</li>
+                <li>An alert will pop up when complete.</li>
+                <li>Open Excel, press control + v on Windows and command + v on Mac</li>
+                <li>Profit</li>
+            </ol>
+        </fieldset>
     </div>
 </div>
 <footer>

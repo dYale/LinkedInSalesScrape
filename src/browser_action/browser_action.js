@@ -44,12 +44,10 @@ var originalElement;
 //initialize CSS animations
 $(document).ready(function() {
   $("select").material_select();
+  $("#instructions").hide();
 
-  $(".info").hover(function(event){
-    $("#scraperForm").hide();
-    $("#instructions").show();
-  }, function(event){
-    $("#instructions").hide();
-    $("#scraperForm").show();
+  $(".info").click(function(){
+    $("#scraperForm").toggle();
+    $("#instructions").toggle();
   })
 });
