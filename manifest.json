@@ -1,14 +1,14 @@
 {
-  "name": "LinkedIn Sales Buddy",
+  "name": "LinkedIn - Sales Lead Assistant",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "The extension scrapes LinkedIn Sales Navigator and generates an Email List that you can paste to excel.",
+  "description": "The extension scrapes LinkedIn Sales Navigator and generates an Email List of leads that you can paste to excel.",
   "icons": {
     "128": "icons/icon128.png"
   },
   "browser_action": {
     "default_icon": "icons/icon128.png",
-    "default_title": "LinkedIn Sales Buddy",
+    "default_title": "LinkedIn - Sales Lead Assistant",
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
